@@ -1,0 +1,1 @@
+g++ -g thread.cpp test.cpp -lpthread
