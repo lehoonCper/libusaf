@@ -1,12 +1,13 @@
-#pragma once
+#ifndef _INC_ACCEPTER_H
+#define _INC_ACCEPTER_H
+#include <memory>
+
+#include "../inc/usaf_base.h"
 #include "../thread/thread.h"
 #include "session.h"
 #include "fd_manager.h"
 #include "tcprecver.h"
-#include <memory>
-
-namespace USAF
-ZONE_START
+USAF_START
 
 class Accepter : public Thread
 {
@@ -22,12 +23,7 @@ private:
     FDManager*  m_pFdManager;
     TcpRecver*  m_pTcpReader;
 };
+USAF_END
 
-
-
-
-
-
-
-ZONE_END
+#endif
 

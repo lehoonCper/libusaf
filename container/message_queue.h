@@ -2,9 +2,7 @@
 #define _INC_MESSAGE_QUEUE_H
 #include "../inc/include.h"
 #include "queue.h"
-
-namespace USAF
-ZONE_START
+USAF_START
 
 template <class T>
 class MessageQueue
@@ -74,5 +72,5 @@ private:
     int                             m_nHashCnt;     //¹þÏ£Êý
     std::mutex*                     m_pHashMutex;   //¹þÏ£Ëø   
 };
-ZONE_END
+USAF_END
 #endif

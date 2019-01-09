@@ -3,9 +3,7 @@
 #include "../../container/message_queue.h"
 #include "../../container/message.h"
 
-
-namespace USAF
-ZONE_START
+USAF_START
 
 #define TCP_MESSAGE_QUEUE_DEFAULT_HASH_NUM  4
 class TcpMessageQueue : public MessageQueue<Message>
@@ -41,5 +39,5 @@ private:
     static TcpMessageQueue* m_pInstance;
 };
 
-ZONE_END
+USAF_END
 #endif

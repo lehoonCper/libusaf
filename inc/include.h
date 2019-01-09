@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef _INC_INCLUDE_H
+#define _INC_INCLUDE_H
 #include <stdio.h>
 #ifdef __LINUX
 #include <sys/socket.h>
@@ -29,21 +29,11 @@
 #include <queue>
 #include <map>
 
+#include "usaf_base.h"
+
 
 using namespace std;
- 
-
-static string GL_GetModulePath()
-{
-	char pCurPath[200] = "";
-	getcwd(pCurPath, 200);
-	int nLen = strlen(pCurPath);
-	return string(pCurPath, nLen);
-}
-
-#define ZONE_START {
-#define ZONE_END	}
 
 
-#define USAFSPACE namespace USAF
 
+#endif

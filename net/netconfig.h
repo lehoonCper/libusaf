@@ -1,9 +1,11 @@
-#pragma once
-#include "../inc/include.h"
-#include "netdef.h"
+#ifndef _INC_NETCONFIG_H
+#define _INC_NETCONFIG_H
 
-namespace USAF
-ZONE_START
+#include <string>
+
+#include "../inc/usaf_base.h"
+#include "netdef.h"
+USAF_START
 
 class NetConfig
 {
@@ -12,10 +14,10 @@ public:
 	int			m_nType;
 	int			m_nProtocol;
 
-	int			m_nPort;
-	string		m_strAddr;
-    string      m_strModule;
-	int			m_nTimeOut;
+	int			    m_nPort;
+	std::string		m_strAddr;
+    std::string     m_strModule;
+	int			    m_nTimeOut;
 
 
     NetConfig()
@@ -38,7 +40,7 @@ class NetConfigServer : public NetConfig
 {
 public:
 
-    NetConfigServer(int nPort, const string& strAddr)
+    NetConfigServer(int nPort, const std::string& strAddr)
     {
         m_nPort = nPort;
         m_strAddr = strAddr;
@@ -47,4 +49,5 @@ public:
 
 };
 
-ZONE_END
+USAF_END
+#endif

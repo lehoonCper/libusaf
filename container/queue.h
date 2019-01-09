@@ -1,9 +1,7 @@
 #ifndef _INC_QUEUE_H
 #define _INC_QUEUE_H
 #include "../inc/include.h"
-
-namespace USAF
-ZONE_START
+USAF_START
 
 template <class T>
 class Queue
@@ -63,5 +61,5 @@ private:
     std::deque<T>       m_queue;
     int                 m_nSize;
 };
-ZONE_END
+USAF_END
 #endif

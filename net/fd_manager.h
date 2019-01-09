@@ -1,12 +1,13 @@
 #ifndef FD_MANAGER_H
 #define FD_MANAGER_H
 
-#include "../inc/include.h"
+#include <map>
+#include <sys/epoll.h>
+#include <unistd.h>
+
+#include "../inc/usaf_base.h"
 #include "session.h"
-
-namespace USAF
-ZONE_START
-
+USAF_START
 
 typedef std::map<int,spSessionInfo> mapFds_t;
 class FDManager
@@ -53,6 +54,6 @@ private:
 
 
 
-ZONE_END
+USAF_END
 
 #endif

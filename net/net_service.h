@@ -1,16 +1,24 @@
-#pragma once
-#include "net_new.h"
+#ifndef _INC_NET_SERVICE_H
+#define _INC_NET_SERVICE_H
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <netinet/in.h>
+#include <sys/epoll.h>
+#include <arpa/inet.h>
+
+#include "../inc/usaf_base.h"
+#include "net_base.h"
 #include "accepter.h"
-namespace USAF
-ZONE_START
+USAF_START
 
 class NetService : public Net
 {
 public:
     NetService();
     NetService(const NetConfigServer& conf);
-
-
    
     virtual bool start();
     virtual bool stop();
@@ -25,4 +33,5 @@ private:
 };
 
 
-ZONE_END
+USAF_END
+#endif

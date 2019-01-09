@@ -1,6 +1,5 @@
 #include "tcprecver.h"
-namespace USAF
-ZONE_START
+USAF_START
 TcpRecver::TcpRecver(FDManager* pFdManager)
 {
     m_pMQ = TcpMessageQueue::getInstance();
@@ -92,4 +91,4 @@ void TcpRecver::disconnect(int nFd)
 }
 
 
-ZONE_END
+USAF_END

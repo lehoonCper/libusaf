@@ -1,7 +1,5 @@
 #include "accepter.h"
-
-namespace USAF
-ZONE_START
+USAF_START
 
 Accepter::Accepter(int nFd)
 {
@@ -38,4 +36,4 @@ bool Accepter::process()
 
 
 
-ZONE_END
+USAF_END

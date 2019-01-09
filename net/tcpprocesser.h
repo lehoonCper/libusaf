@@ -1,11 +1,11 @@
 #ifndef _INC_TCPPROCESSER_H_
 #define _INC_TCPPROCESSER_H_
-#include "../inc/include.h"
+
+#include "../inc/usaf_base.h"
 #include "../thread/thread.h"
 #include "container/tcp_message_queue.h"
 #include "../container/message.h"
-namespace USAF
-ZONE_START
+USAF_START
 class TcpProcesser : public Thread
 {
 public:
@@ -18,5 +18,5 @@ private:
     int                         m_nId;
     TcpMessageQueue*            m_pMQ;
 };
-ZONE_END
+USAF_END
 #endif

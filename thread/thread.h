@@ -1,11 +1,11 @@
-#pragma once
-#include "../inc/include.h"
+#ifndef _INC_THREAD_H
+#define _INC_THREAD_H
+#include <pthread.h>
 
-namespace USAF
-ZONE_START
+#include "../inc/usaf_base.h"
+USAF_START
 
 typedef int thread_stat_t;
-
 
 class Thread
 {
@@ -18,7 +18,7 @@ public:
 
     bool stop();
 
-    virtual bool process();
+    virtual bool process() = 0;
 
     bool isRunning() const;
 
@@ -29,4 +29,5 @@ private:
     bool                     m_bRunning;
 };
 
-ZONE_END
+USAF_END
+#endif

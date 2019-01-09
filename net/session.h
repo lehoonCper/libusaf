@@ -1,9 +1,13 @@
-#pragma once
+#ifndef _INC_SESSION_H
+#define _INC_SESSION_H
 
-#include "../inc/include.h"
 #include <memory>
-namespace USAF
-ZONE_START
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include "../inc/usaf_base.h"
+USAF_START
 
 class SessionInfo
 {
@@ -26,7 +30,7 @@ public:
 		socklen_t addrLen = sizeof(addr);
 
 		getpeername(nFd, (sockaddr*)&addr, &addrLen);
-		m_strAddr = string(inet_ntoa(addr.sin_addr));
+		m_strAddr = std::string(inet_ntoa(addr.sin_addr));
 		m_nPort = ntohs(addr.sin_port);
         m_nConnTime = time(NULL);
         m_nFd = nFd;
@@ -43,7 +47,7 @@ public:
         return m_nPort;
     }
 
-    string& getAddr()
+    std::string& getAddr()
     {
         return m_strAddr;
     }
@@ -54,11 +58,12 @@ public:
     }
 
 private:
-    int         m_nFd;
-    int         m_nPort;
-    string      m_strAddr;
-    int         m_nConnTime;
+    int             m_nFd;
+    int             m_nPort;
+    std::string     m_strAddr;
+    int             m_nConnTime;
 };
 
 typedef std::shared_ptr<SessionInfo> spSessionInfo;
-ZONE_END
+USAF_END
+#endif

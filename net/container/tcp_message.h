@@ -3,11 +3,11 @@
 
 #include "../../inc/include.h"
 namespace USAF
-ZONE_START
+USAF_START
 
 class TCPMessage
 
 
 
-ZONE_END
+USAF_END
 #endif

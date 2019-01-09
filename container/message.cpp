@@ -1,7 +1,6 @@
 #include "message.h"
+USAF_START
 
-namespace USAF
-ZONE_START
 Message::Message()
 {
     m_pData = NULL;
@@ -33,4 +32,4 @@ ostream& operator<< (ostream& stm, Message& ref)
 
 
 
-ZONE_END
+USAF_END

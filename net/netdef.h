@@ -1,8 +1,6 @@
 #ifndef INC_NETDEF_H
 #define INC_NETDEF_H
-
-USAFSPACE
-ZONE_START
+USAF_START
 
 #define USAF_NET_MOD_BASE			0
 #define USAF_NET_MOD_HTTPD			1	
@@ -22,7 +20,5 @@ ZONE_START
 
 #define USAF_LOCALHOST				"127.0.0.1"
 
-
-
-ZONE_END
+USAF_END
 #endif

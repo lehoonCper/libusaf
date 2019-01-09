@@ -2,8 +2,7 @@
 #define _INC_MESSAGE_H_
 #include "../inc/include.h"
 #include "../net/session.h"
-namespace USAF
-ZONE_START
+USAF_START
 
 typedef std::shared_ptr<char*>  spchar;
 class Message
@@ -45,5 +44,5 @@ private:
     int             m_nLen;
     spSessionInfo   m_pSession;
 };
-ZONE_END
+USAF_END
 #endif

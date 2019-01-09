@@ -1,6 +1,5 @@
 #include "tcpprocesser.h"
-namespace USAF
-ZONE_START
+USAF_START
 TcpMessageQueue* TcpMessageQueue::m_pInstance = NULL;
 TcpProcesser::TcpProcesser(int nId, TcpMessageQueue * pMQ)
 {
@@ -28,4 +27,4 @@ bool TcpProcesser::process()
 
 }
 
-ZONE_END
+USAF_END

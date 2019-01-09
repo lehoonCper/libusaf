@@ -1,7 +1,5 @@
 #include "net_service.h"
-
-namespace USAF
-ZONE_START
+USAF_START
 
 NetService::NetService()
 {
@@ -89,4 +87,4 @@ bool NetService::stop()
 
 
 
-ZONE_END
+USAF_END

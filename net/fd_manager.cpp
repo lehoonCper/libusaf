@@ -1,7 +1,5 @@
 #include "fd_manager.h"
-
-namespace USAF
-ZONE_START
+USAF_START
 
 FDManager::FDManager()
 {
@@ -26,7 +24,7 @@ bool FDManager::insertSession (int nFd, spSessionInfo pSession)
     if(iter != m_mpFds.end())
     {
         pthread_mutex_unlock(&m_mutexFds);
-        cout << "fd already exist, fd=" << nFd << endl;
+        printf("fd already exist, fd=%d\n", nFd);
         return false;
     }
     m_mpFds[nFd] = pSession;
@@ -51,7 +49,7 @@ spSessionInfo FDManager::getSession(int nFd)
     auto iter = m_mpFds.find(nFd);
     if(iter == m_mpFds.end())
     {
-        cout << "can't find fd, fd=" << nFd << endl;
+        printf("can't find fd, fd=%d\n", nFd);
         return nullptr;
     }
     spSessionInfo pDtl = iter->second;
@@ -78,4 +76,4 @@ bool FDManager::delSession(int nFd)
     return true;
 }
 
-ZONE_END
+USAF_END

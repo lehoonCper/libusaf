@@ -1,1 +1,0 @@
-g++ -g net_new.cpp net_service.cpp accepter.cpp test.cpp fd_manager.cpp tcprecver.cpp ../thread/thread.cpp ../container/message.cpp tcpprocesser.cpp -o net_test -lpthread -std=c++11 -D __LINUX -O2

@@ -1,7 +1,5 @@
 #include "thread.h"
-namespace USAF
-ZONE_START
-
+USAF_START
 
 void* thread_caller(void* p)
 {
@@ -43,16 +41,6 @@ bool Thread::stop()
     return true;
 }
 
-bool Thread::process()
-{
-    while(isRunning())
-    {
-        cout << "Thread::Process" << endl;
-        usleep(500000);
-    }
-    return true;
-}
-
 bool Thread::isRunning() const
 {
     return m_bRunning;
@@ -65,4 +53,4 @@ pthread_t Thread::getId() const
 
 
 
-ZONE_END
+USAF_END
