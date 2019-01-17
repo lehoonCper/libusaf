@@ -1,34 +1,51 @@
 #include "message.h"
+
 USAF_START
 
 Message::Message()
 {
-    m_pData = NULL;
-    m_nLen = 0;
-    m_pSession = NULL;
+    m_pData = new char[MESSAGE_DEFAULT_SIZE];
+    memset(m_pData, 0, MESSAGE_DEFAULT_SIZE);
+    m_nSize = MESSAGE_DEFAULT_SIZE;
+    m_pTime = new Timer();
 }
 
-Message::Message(const char* pData, int nLen, spSessionInfo pSession)
+Message::Message(const char* pData, int nSize)
 {
-    char* pTemp = new char[nLen];
-    memcpy(pTemp, pData, nLen);
-    m_pData = std::make_shared<char*>(pTemp);
-    m_nLen = nLen;
-    m_pSession = pSession;
+    m_pData = new char[nSize];
+    memcpy(m_pData, pData, nSize);
+    m_nSize = nSize;
+    m_pTime = new Timer();
+}
+
+Message::Message(const Message& ref)
+{
+    m_pData = new char[ref.size()];
+    memcpy(m_pData, ref.getData(), ref.size());
+    m_nSize = ref.size();
+    m_pTime = new Timer();
 }
 
 Message::~Message()
 {
-    m_nLen = 0;
+    m_nSize = 0;
+    if(m_pTime)
+    {
+        delete m_pTime;
+        m_pTime = NULL;
+    }
+    if(m_pData)
+    {
+        delete[] m_pData;
+        m_pData = NULL;
+    }
 }
 
-ostream& operator<< (ostream& stm, Message& ref)
+std::ostream& operator<< (std::ostream& stm, Message& ref)
 {
-    stm << "Message:" << *ref.m_pData <<" ["<< ref.getSessionInfo().getAddr() << "] [" << ref.getSessionInfo().getFd() << "]";
+    stm << "Message:" << ref.getData() << "length: " << ref.size() << std::endl;
     return stm;
 }
-
-
 
 
 

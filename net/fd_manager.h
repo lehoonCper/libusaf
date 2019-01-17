@@ -13,15 +13,24 @@ typedef std::map<int,spSessionInfo> mapFds_t;
 class FDManager
 {
 public:
+    enum EpollEventType
+    {
+        read_event = 0,
+        write_event = 1,
+    };
 
     FDManager();
     ~FDManager();
+
+    bool registeEpollEvent(int nFd, int nType);
+
+    bool removeEpollEvent(int nFd, int nType);
 
     bool insertSession (int nFd, spSessionInfo pSession);
 
     spSessionInfo getSession(int nFd);
 
-    bool delSession(int nFd);
+    bool delSession(int nFd, int nType);
 
     int getReadFd() const
     {

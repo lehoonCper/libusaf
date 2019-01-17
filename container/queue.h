@@ -1,6 +1,8 @@
 #ifndef _INC_QUEUE_H
 #define _INC_QUEUE_H
-#include "../inc/include.h"
+#include <queue>
+#include <mutex>
+#include "../inc/usaf_base.h"
 USAF_START
 
 template <class T>

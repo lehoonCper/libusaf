@@ -3,9 +3,8 @@ USAF_START
 
 Net::Net()
 {
-    m_pConf = NULL;
     m_flagInit = false;
-    printf("start USAF Net\n");
+    std::cout << "[service] start USAF Net" << std::endl;
 }
 
 bool Net::init()

@@ -1,19 +1,17 @@
 #include "accepter.h"
 USAF_START
 
-Accepter::Accepter(int nFd)
+Accepter::Accepter(int nFd, FDManager* pFdManager)
 {
     m_nListenFd = nFd;
-    m_pFdManager = new FDManager();
-    m_pTcpReader = new TcpRecver(m_pFdManager);
-    m_pTcpReader->start();
+    m_pFdManager = pFdManager;
 }
 
 Accepter::~Accepter()
 {
-    if(m_pFdManager)
+    if(isRunning())
     {
-        delete m_pFdManager;
+        stop();
     }
 }
 
@@ -26,9 +24,7 @@ bool Accepter::process()
         {
             continue;
         }
-
-        //cout << "recv new fd: " << nFd << endl;
-        spSessionInfo session(new SessionInfo());
+        spSessionInfo session = std::make_shared<SessionInfo>(SessionInfo());
         session->setSession(nFd);
         m_pFdManager->insertSession(nFd, session);
     }

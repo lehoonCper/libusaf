@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 
 #include "../inc/usaf_base.h"
+#include "../misc/usaf_time.h"
 USAF_START
 
 class SessionInfo
@@ -14,16 +15,19 @@ class SessionInfo
 public:
     SessionInfo()
     {
-        
+        m_pConnTime = NULL;
     }
     ~SessionInfo()
     {
         m_nFd = 0;
         m_nPort = 0;
-        m_nConnTime = 0;
+        if(m_pConnTime)
+        {
+            delete m_pConnTime;
+            m_pConnTime = NULL;
+        }
     }
 
-#ifdef __LINUX//windows下测试用，之后删除
     bool setSession(int nFd)
     {
         sockaddr_in addr;
@@ -32,10 +36,9 @@ public:
 		getpeername(nFd, (sockaddr*)&addr, &addrLen);
 		m_strAddr = std::string(inet_ntoa(addr.sin_addr));
 		m_nPort = ntohs(addr.sin_port);
-        m_nConnTime = time(NULL);
+        m_pConnTime = new Timer();
         m_nFd = nFd;
     }
-#endif
 
     int getFd() const
     {
@@ -52,16 +55,16 @@ public:
         return m_strAddr;
     }
 
-    int getConnTime() const
+    Timer* getConnTime() const
     {
-        return m_nConnTime;
+        return m_pConnTime;
     }
 
 private:
     int             m_nFd;
     int             m_nPort;
     std::string     m_strAddr;
-    int             m_nConnTime;
+    Timer*          m_pConnTime;
 };
 
 typedef std::shared_ptr<SessionInfo> spSessionInfo;

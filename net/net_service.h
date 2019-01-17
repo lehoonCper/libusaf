@@ -12,6 +12,10 @@
 #include "../inc/usaf_base.h"
 #include "net_base.h"
 #include "accepter.h"
+#include "tcp_message_queue_mgr.h"
+#include "net_config.h"
+#include "session.h"
+
 USAF_START
 
 class NetService : public Net
@@ -19,17 +23,25 @@ class NetService : public Net
 public:
     NetService();
     NetService(const NetConfigServer& conf);
+    ~NetService();
    
     virtual bool start();
     virtual bool stop();
+
+    void transPort(spTcpMessage pMsg);
+
 
 protected:
     virtual bool init();
 
 private:
     int                 m_listenFd;
+    NetConfigServer*    m_pConf;
     Accepter*           m_accepter;
-    
+    FDManager*          m_pFdManager;
+    TcpRecver*          m_pTcpReader;
+    TcpWriter*          m_pTcpWriter;
+    TcpMessageQueueMgr* m_pMessageQueueMgr;
 };
 
 

@@ -1,48 +1,55 @@
 #ifndef _INC_MESSAGE_H_
 #define _INC_MESSAGE_H_
-#include "../inc/include.h"
-#include "../net/session.h"
+#include <iostream>
+#include <string.h>
+#include "../misc/usaf_time.h"
 USAF_START
 
-typedef std::shared_ptr<char*>  spchar;
+#define MESSAGE_DEFAULT_SIZE        1
 class Message
 {
 public:
     Message();
-    Message(const char* pData, int nLen, spSessionInfo pSession);
+    Message(const Message& ref);
+    Message(const char* pData, int nSize);
     virtual ~Message();
 
-    friend ostream& operator <<(ostream& stream, Message& ref);
+    friend std::ostream& operator <<(std::ostream& stream, Message& ref);
 
     Message& operator = (Message& ref)
     {
-        this->m_pData = ref.m_pData;
-        this->m_nLen = ref.m_nLen;
-        this->m_pSession = ref.m_pSession;
+        if(size() != ref.size())
+        {
+            delete m_pData;
+            m_pData = new char[ref.size()];
+        }
+        memcpy(this->m_pData, ref.m_pData, ref.size());
+        this->m_nSize = ref.m_nSize;
+        this->m_pTime->resetTime();
+
         return *this;
     }
 
 //inline
     inline char* getData() const
     {
-        return *m_pData;
+        return m_pData;
     }
 
     inline int size() const
     {
-        return m_nLen;
+        return m_nSize;
     }
 
-    inline SessionInfo getSessionInfo() const
+    inline Timer* getTime() const
     {
-        return *m_pSession;
+        return m_pTime;
     }
 
 private:
-
-    spchar          m_pData;
-    int             m_nLen;
-    spSessionInfo   m_pSession;
+    char*          m_pData;
+    size_t         m_nSize;
+    Timer*         m_pTime;
 };
 USAF_END
 #endif

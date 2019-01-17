@@ -1,26 +1,33 @@
-#include "../../inc/include.h"
-#include "../container/tcp_message_queue.h"
-#include "../../container/message.h"
 #include <thread>
+#include <string>
+
+#include "../../inc/usaf_base.h"
+#include "../tcp_message_queue_mgr.h"
+#include "../container/tcp_message.h"
+#include "../../container/message.h"
 #include "../net_service.h"
 
 using namespace USAF;
 extern int errno;
+std::string res("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 4\r\nConnection: close\r\n\r\ntrue");
 
-string res("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 4\r\nConnection: close\r\n\r\ntrue");
 void func_send(void* p, int nHash)
 {
-    TcpMessageQueue* mq = (TcpMessageQueue*)p;
-    Message msg;
+    TcpMessageQueue* pReadMq = TcpMessageQueueMgr::getInstance()->getReadMessageQueue();
+    NetService* pServ = (NetService*)p;
+    spTcpMessage pRecvMsg;
     while(true)
     {
-        if(mq->get(nHash, msg))
+        if(pReadMq->get(nHash, pRecvMsg))
         {
-            send(msg.getSessionInfo().getFd(), res.data(), res.size(), MSG_NOSIGNAL);
+            std::cout << pRecvMsg->getData() << std::endl;
+            spTcpMessage pSendMsg = std::make_shared<TCPMessage>(TCPMessage(res.data(), res.size(), pRecvMsg->getSessionInfo()));
+            //pServ->transPort(pSendMsg);
+            send((*pSendMsg).getSessionInfo().get()->getFd(), pSendMsg->getData(), pSendMsg->size(), MSG_NOSIGNAL);
         }
         else
         {
-            usleep(5000);
+            usleep(50);
         }
     }
 }
@@ -28,14 +35,16 @@ void func_send(void* p, int nHash)
 int main()
 {
     NetConfigServer conf(8848, "localhost");
-    NetService serv(conf);
-    TcpMessageQueue* mq = TcpMessageQueue::getInstance(4);
-    serv.start();
+    NetService* pServ = new NetService(conf);
+    if(false == pServ->start())
+    {
+        return -1;
+    }
     
-    std::thread* pt1 = new std::thread(func_send, (void*)mq, 0);
-    std::thread* pt2 = new std::thread(func_send, (void*)mq, 1);
-    std::thread* pt3 = new std::thread(func_send, (void*)mq, 2);
-    std::thread* pt4 = new std::thread(func_send, (void*)mq, 3);    
+    std::thread* pt1 = new std::thread(func_send, (void*)pServ, 0);
+    std::thread* pt2 = new std::thread(func_send, (void*)pServ, 1);
+    std::thread* pt3 = new std::thread(func_send, (void*)pServ, 2);
+    std::thread* pt4 = new std::thread(func_send, (void*)pServ, 3);    
 
     while(true)
     {

@@ -1,6 +1,6 @@
 #ifndef _INC_MESSAGE_QUEUE_H
 #define _INC_MESSAGE_QUEUE_H
-#include "../inc/include.h"
+#include <map>
 #include "queue.h"
 USAF_START
 
@@ -20,7 +20,7 @@ public:
 
     ~MessageQueue()
     {
-        for(int i = 0; i < m_nHashCnt; i++)
+        for(int i = 0; i < m_nHashCnt; ++i)
         {
             m_pHashMutex[i].lock();
             auto iter = m_mpMQ.find(i);

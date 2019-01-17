@@ -6,14 +6,15 @@
 #include "../thread/thread.h"
 #include "session.h"
 #include "fd_manager.h"
-#include "tcprecver.h"
+#include "tcp_recver.h"
+#include "tcp_writer.h"
 USAF_START
 
 class Accepter : public Thread
 {
 public:
-    Accepter(int nFd);
-    ~Accepter();
+    Accepter(int nFd, FDManager* pFdManager);
+    virtual ~Accepter();
 
     bool process();
 
@@ -21,7 +22,6 @@ private:
 
     int         m_nListenFd;
     FDManager*  m_pFdManager;
-    TcpRecver*  m_pTcpReader;
 };
 USAF_END
 
