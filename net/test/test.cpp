@@ -1,5 +1,6 @@
 #include <thread>
 #include <string>
+#include <unistd.h>
 
 #include "../../inc/usaf_base.h"
 #include "../tcp_message_queue_mgr.h"
@@ -15,15 +16,16 @@ void func_send(void* p, int nHash)
 {
     TcpMessageQueue* pReadMq = TcpMessageQueueMgr::getInstance()->getReadMessageQueue();
     NetService* pServ = (NetService*)p;
-    spTcpMessage pRecvMsg;
+    TCPMessage* pRecvMsg;
     while(true)
     {
         if(pReadMq->get(nHash, pRecvMsg))
         {
-            std::cout << pRecvMsg->getData() << std::endl;
-            spTcpMessage pSendMsg = std::make_shared<TCPMessage>(TCPMessage(res.data(), res.size(), pRecvMsg->getSessionInfo()));
+            //std::cout << pRecvMsg->getData() << std::endl;
+            TCPMessage* pSendMsg = new TCPMessage(res.data(), res.size(), pRecvMsg->getSessionInfo());
             //pServ->transPort(pSendMsg);
-            send((*pSendMsg).getSessionInfo().get()->getFd(), pSendMsg->getData(), pSendMsg->size(), MSG_NOSIGNAL);
+            send(pSendMsg->getSessionInfo()->getFd(), pSendMsg->getData(), pSendMsg->size(), MSG_NOSIGNAL);
+            delete pRecvMsg;
         }
         else
         {

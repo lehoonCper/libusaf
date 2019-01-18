@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <sys/time.h>
+#include <string.h>
 
 #include "../inc/usaf_base.h"
 USAF_START
@@ -52,6 +53,15 @@ public:
     void resetTime()
     {
         gettimeofday(m_pTimeVal, NULL);
+    }
+
+    void copy(Timer* pTimer)
+    {
+        if(!pTimer || !this)
+        {
+            return;
+        }
+        memcpy(m_pTimeVal, pTimer->m_pTimeVal, sizeof(timeval));
     }
     
 private:

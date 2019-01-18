@@ -25,7 +25,6 @@ public:
         }
         memcpy(this->m_pData, ref.m_pData, ref.size());
         this->m_nSize = ref.m_nSize;
-        this->m_pTime->resetTime();
 
         return *this;
     }
@@ -41,15 +40,9 @@ public:
         return m_nSize;
     }
 
-    inline Timer* getTime() const
-    {
-        return m_pTime;
-    }
-
 private:
     char*          m_pData;
     size_t         m_nSize;
-    Timer*         m_pTime;
 };
 USAF_END
 #endif

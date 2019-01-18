@@ -24,9 +24,9 @@ bool Accepter::process()
         {
             continue;
         }
-        spSessionInfo session = std::make_shared<SessionInfo>(SessionInfo());
-        session->setSession(nFd);
-        m_pFdManager->insertSession(nFd, session);
+        SessionInfo* pSession = new SessionInfo();
+        pSession->setSession(nFd);
+        m_pFdManager->insertSession(nFd, pSession);
     }
 }
 

@@ -24,12 +24,16 @@ bool TcpProcesser::process()
     }
     while(isRunning())
     {
-        spTcpMessage pMsg = NULL;
+        TCPMessage* pMsg = NULL;
         if(!pMessageQueueRead->get(m_nId, pMsg))
         {
             continue;
         }
         std::cout << pMsg << std::endl;
+        if(pMsg)
+        {
+            delete pMsg;
+        }
     }
 }
 

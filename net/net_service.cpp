@@ -175,7 +175,7 @@ bool NetService::stop()
     return true;
 }
 
-void NetService::transPort(spTcpMessage pMsg)
+void NetService::transPort(TCPMessage* pMsg)
 {
     if(!pMsg)
     {

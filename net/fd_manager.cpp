@@ -1,9 +1,10 @@
 #include "fd_manager.h"
 #include <sys/types.h>
 #include <utime.h>
+#include <unistd.h>
+#include <iostream>
 
 USAF_START
-
 FDManager::FDManager()
 {
     m_nEpollSize = 65533;
@@ -11,7 +12,7 @@ FDManager::FDManager()
     m_EpollFdWrite = epoll_create(m_nEpollSize);
     pthread_mutex_init(&m_mutexFds, NULL); 
     pthread_mutex_init(&m_mutexRdFd, NULL); 
-    pthread_mutex_init(&m_mutexWtFd, NULL); 
+    pthread_mutex_init(&m_mutexWtFd, NULL);
 }
 
 FDManager::~FDManager()
@@ -48,7 +49,7 @@ bool FDManager::registeEpollEvent(int nFd, int nType)
 
 bool FDManager::removeEpollEvent(int nFd, int nType)
 {
-    if(nType == nType == FDManager::EpollEventType::read_event)
+    if(nType == FDManager::EpollEventType::read_event)
     {
         pthread_mutex_lock(&m_mutexRdFd);
         epoll_ctl(m_EpollFdRead, EPOLL_CTL_DEL, nFd, NULL);
@@ -67,7 +68,7 @@ bool FDManager::removeEpollEvent(int nFd, int nType)
     return true;
 }
 
-bool FDManager::insertSession (int nFd, spSessionInfo pSession)
+bool FDManager::insertSession (int nFd, SessionInfo* pSession)
 {
     pthread_mutex_lock(&m_mutexFds);
     auto iter = m_mpFds.find(nFd);
@@ -84,7 +85,7 @@ bool FDManager::insertSession (int nFd, spSessionInfo pSession)
     return true;
 }
 
-spSessionInfo FDManager::getSession(int nFd)
+SessionInfo* FDManager::getSession(int nFd)
 {
     pthread_mutex_lock(&m_mutexFds);
     auto iter = m_mpFds.find(nFd);
@@ -93,9 +94,9 @@ spSessionInfo FDManager::getSession(int nFd)
         printf("can't find fd, fd=%d\n", nFd);
         return nullptr;
     }
-    spSessionInfo pDtl = iter->second;
+    SessionInfo* pSession = iter->second;
     pthread_mutex_unlock(&m_mutexFds);
-    return pDtl;
+    return pSession;
 }
 
 bool FDManager::delSession(int nFd, int nType)
@@ -106,7 +107,7 @@ bool FDManager::delSession(int nFd, int nType)
     auto iter = m_mpFds.find(nFd);
     if(iter != m_mpFds.end())
     {
-        printf("Fd_%d Cost time: %ld\n", nFd, iter->second.get()->getConnTime()->getCostTimeMs());
+        //std::cout << "cost time: " << iter->second->getTimer()->getCostTimeMs() << std::endl;
         m_mpFds.erase(iter);
     }
     pthread_mutex_unlock(&m_mutexFds);

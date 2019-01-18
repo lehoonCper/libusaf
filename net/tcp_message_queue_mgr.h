@@ -5,8 +5,7 @@
 #include "container/tcp_message.h"
 USAF_START
 
-typedef std::shared_ptr<TCPMessage> spTcpMessage;
-typedef MessageQueue<spTcpMessage> TcpMessageQueue;
+typedef MessageQueue<TCPMessage*> TcpMessageQueue;
 const int DEFAULT_MESSAGE_QUEUE_PROCESSER_CNT = 4;
 
 class TcpMessageQueueMgr
@@ -43,7 +42,6 @@ private:
     int                 m_nReadProcesserCnt;
     int                 m_nWriteProcesserCnt;
 };
-
 
 USAF_END
 #endif
