@@ -10,14 +10,14 @@ class TCPMessage : public Message
 public:
     TCPMessage();
     TCPMessage(const TCPMessage& ref);
-    TCPMessage(const char* pData, int nSize, spSessionInfo pSession);
+    TCPMessage(const char* pData, int nSize, SessionInfo* pSession);
 
     ~TCPMessage();
 
-    spSessionInfo getSessionInfo();
+    SessionInfo*    getSessionInfo();
 
 private:
-    spSessionInfo           m_pSession;
+    SessionInfo*     m_pSession;
 };
 
 USAF_END

@@ -1,4 +1,5 @@
 #include "tcp_recver.h"
+#include <unistd.h>
 USAF_START
 TcpRecver::TcpRecver(FDManager* pFdManager)
 {
@@ -83,7 +84,7 @@ void TcpRecver::doRecv(epoll_event * pEvent, char * pBuffer)
              }
             continue;
         }
-        spTcpMessage pMsg = std::make_shared<TCPMessage>(TCPMessage(pBuffer, nRecvRet, m_pFdManager->getSession(nFd)));
+        TCPMessage* pMsg = new TCPMessage(pBuffer, nRecvRet, m_pFdManager->getSession(nFd));
         m_pMQ->put(nFd, pMsg);
     }//for
 }
@@ -91,6 +92,7 @@ void TcpRecver::doRecv(epoll_event * pEvent, char * pBuffer)
 void TcpRecver::disconnect(int nFd)
 {
     m_pFdManager->delSession(nFd, FDManager::EpollEventType::read_event);
+    //close(nFd);
 }
 
 USAF_END

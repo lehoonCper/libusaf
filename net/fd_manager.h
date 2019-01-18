@@ -3,13 +3,11 @@
 
 #include <map>
 #include <sys/epoll.h>
-#include <unistd.h>
 
 #include "../inc/usaf_base.h"
 #include "session.h"
 USAF_START
 
-typedef std::map<int,spSessionInfo> mapFds_t;
 class FDManager
 {
 public:
@@ -26,9 +24,9 @@ public:
 
     bool removeEpollEvent(int nFd, int nType);
 
-    bool insertSession (int nFd, spSessionInfo pSession);
+    bool insertSession (int nFd, SessionInfo* pSession);
 
-    spSessionInfo getSession(int nFd);
+    SessionInfo* getSession(int nFd);
 
     bool delSession(int nFd, int nType);
 
@@ -49,7 +47,7 @@ public:
 
 private:
 
-    std::map<int,spSessionInfo>             m_mpFds;
+    std::map<int,SessionInfo*>   m_mpFds;
     int                 m_EpollFdRead;
     int                 m_EpollFdWrite;
     int                 m_nEpollSize;
@@ -57,6 +55,7 @@ private:
     pthread_mutex_t      m_mutexFds;
     pthread_mutex_t      m_mutexRdFd;
     pthread_mutex_t      m_mutexWtFd;
+
 };
 
 

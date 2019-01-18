@@ -28,7 +28,7 @@ public:
     virtual bool start();
     virtual bool stop();
 
-    void transPort(spTcpMessage pMsg);
+    void transPort(TCPMessage* pMsg);
 
 
 protected:

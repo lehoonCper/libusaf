@@ -8,12 +8,13 @@ TCPMessage::TCPMessage()
 
 TCPMessage::TCPMessage(const TCPMessage& ref) : Message(ref)
 {
-    m_pSession = ref.m_pSession;
+    m_pSession = new SessionInfo();
+    memcpy(m_pSession, ref.m_pSession, sizeof(SessionInfo));
 }
 
-TCPMessage::TCPMessage(const char * pData, int nSize, spSessionInfo pSession):Message(pData, nSize)
+TCPMessage::TCPMessage(const char * pData, int nSize, SessionInfo* pSession):Message(pData, nSize)
 {
-    m_pSession = pSession;
+    m_pSession = new SessionInfo(pSession);
 }
 
 TCPMessage::~TCPMessage()
@@ -21,7 +22,7 @@ TCPMessage::~TCPMessage()
 
 }
 
-spSessionInfo TCPMessage::getSessionInfo()
+SessionInfo* TCPMessage::getSessionInfo()
 {
     return m_pSession;
 }

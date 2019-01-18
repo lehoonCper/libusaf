@@ -15,16 +15,30 @@ class SessionInfo
 public:
     SessionInfo()
     {
-        m_pConnTime = NULL;
+        m_nFd = 0;
+        m_nPort = 0;
+        m_pTime = new Timer();
     }
     ~SessionInfo()
     {
         m_nFd = 0;
         m_nPort = 0;
-        if(m_pConnTime)
+        if(m_pTime)
         {
-            delete m_pConnTime;
-            m_pConnTime = NULL;
+            delete m_pTime;
+            m_pTime = NULL;
+        }
+    }
+
+    SessionInfo(SessionInfo* pRef)
+    {
+        if(pRef)
+        {
+            m_nFd = pRef->m_nFd;
+            m_nPort = pRef->m_nPort;
+            m_strAddr = pRef->m_strAddr;
+            m_pTime = new Timer();
+            m_pTime->copy(pRef->m_pTime);
         }
     }
 
@@ -36,7 +50,7 @@ public:
 		getpeername(nFd, (sockaddr*)&addr, &addrLen);
 		m_strAddr = std::string(inet_ntoa(addr.sin_addr));
 		m_nPort = ntohs(addr.sin_port);
-        m_pConnTime = new Timer();
+        m_pTime->resetTime();
         m_nFd = nFd;
     }
 
@@ -55,18 +69,17 @@ public:
         return m_strAddr;
     }
 
-    Timer* getConnTime() const
+    Timer* getTimer() const
     {
-        return m_pConnTime;
+        return m_pTime;
     }
 
 private:
     int             m_nFd;
     int             m_nPort;
     std::string     m_strAddr;
-    Timer*          m_pConnTime;
+    Timer*          m_pTime;
 };
 
-typedef std::shared_ptr<SessionInfo> spSessionInfo;
 USAF_END
 #endif

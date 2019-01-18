@@ -20,10 +20,10 @@ public:
     void disconnect(int nFd);
 
 private:
-    int                 m_nReadFd;              //epoll read fd
-    int                 m_nEpollSize;           //epoll list size
-    FDManager*          m_pFdManager;           //all accepted fd
-    TcpMessageQueue*    m_pMQ;          //msg queue
+    int                 m_nReadFd;
+    int                 m_nEpollSize;
+    FDManager*          m_pFdManager;
+    TcpMessageQueue*    m_pMQ;
 };
 
 #define TCPRECVER_BUFFER    10000

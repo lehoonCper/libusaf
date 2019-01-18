@@ -1,4 +1,5 @@
 #include "tcp_writer.h"
+#include <unistd.h>
 USAF_START
 
 TcpWriter::TcpWriter(FDManager* pFdManager)
@@ -63,23 +64,24 @@ void TcpWriter::doWirte(epoll_event* pEvent)
             continue;
         }
 
-        spTcpMessage pMsg;
+        TCPMessage* pMsg = NULL;
         if(!m_pMQ->get(nFd, pMsg))
         {
             continue;
         }
-        if(pMsg->size() <= 0)
+        if(pMsg->size() <= 0 || pMsg == NULL)
         {
             continue;
         }
-        std::cout << "data:" << pMsg->getData() << std::endl;
+        //std::cout << "data:" << pMsg->getData() << std::endl;
         int nSendRet = send(nFd, pMsg->getData(), pMsg->size(), MSG_NOSIGNAL);
+        delete pMsg;
         if(nSendRet <= 0)
         {
             if(nSendRet == 0 || (EAGAIN != errno && EINPROGRESS != errno)) 
             {
                 disconnect(nFd);
-            } 
+            }
         }
     }//for
 }
@@ -87,6 +89,7 @@ void TcpWriter::doWirte(epoll_event* pEvent)
 void TcpWriter::disconnect(int nFd)
 {
     m_pFdManager->delSession(nFd, FDManager::EpollEventType::write_event);
+    //close(nFd);
 }
 
 USAF_END

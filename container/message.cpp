@@ -7,7 +7,6 @@ Message::Message()
     m_pData = new char[MESSAGE_DEFAULT_SIZE];
     memset(m_pData, 0, MESSAGE_DEFAULT_SIZE);
     m_nSize = MESSAGE_DEFAULT_SIZE;
-    m_pTime = new Timer();
 }
 
 Message::Message(const char* pData, int nSize)
@@ -15,7 +14,6 @@ Message::Message(const char* pData, int nSize)
     m_pData = new char[nSize];
     memcpy(m_pData, pData, nSize);
     m_nSize = nSize;
-    m_pTime = new Timer();
 }
 
 Message::Message(const Message& ref)
@@ -23,17 +21,11 @@ Message::Message(const Message& ref)
     m_pData = new char[ref.size()];
     memcpy(m_pData, ref.getData(), ref.size());
     m_nSize = ref.size();
-    m_pTime = new Timer();
 }
 
 Message::~Message()
 {
     m_nSize = 0;
-    if(m_pTime)
-    {
-        delete m_pTime;
-        m_pTime = NULL;
-    }
     if(m_pData)
     {
         delete[] m_pData;
