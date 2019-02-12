@@ -23,9 +23,10 @@ void func_send(void* p, int nHash)
         {
             //std::cout << pRecvMsg->getData() << std::endl;
             TCPMessage* pSendMsg = new TCPMessage(res.data(), res.size(), pRecvMsg->getSessionInfo());
-            //pServ->transPort(pSendMsg);
-            send(pSendMsg->getSessionInfo()->getFd(), pSendMsg->getData(), pSendMsg->size(), MSG_NOSIGNAL);
+            pServ->transPort(pSendMsg);
+            //send(pSendMsg->getSessionInfo()->getFd(), pSendMsg->getData(), pSendMsg->size(), MSG_NOSIGNAL);
             delete pRecvMsg;
+            delete pSendMsg;
         }
         else
         {
@@ -53,5 +54,10 @@ int main()
         usleep(5000);
     }
 
+    delete pt1;
+    delete pt2;
+    delete pt3;
+    delete pt4;
+    delete pServ;
     return 0;
 }

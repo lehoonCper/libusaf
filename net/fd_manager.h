@@ -3,6 +3,7 @@
 
 #include <map>
 #include <sys/epoll.h>
+#include <mutex>
 
 #include "../inc/usaf_base.h"
 #include "session.h"
@@ -47,14 +48,13 @@ public:
 
 private:
 
-    std::map<int,SessionInfo*>   m_mpFds;
+    std::map<int, SessionInfo*>   m_mpFds;
     int                 m_EpollFdRead;
     int                 m_EpollFdWrite;
     int                 m_nEpollSize;
- //add by lehoon: try c11 std::mutex in the future...
-    pthread_mutex_t      m_mutexFds;
-    pthread_mutex_t      m_mutexRdFd;
-    pthread_mutex_t      m_mutexWtFd;
+    std::mutex*         m_pMutexFds;
+    std::mutex*         m_pMutexRdFd;
+    std::mutex*         m_pMutexWtFd;
 
 };
 

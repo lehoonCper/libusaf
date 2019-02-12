@@ -24,7 +24,7 @@ TcpMessageQueueMgr::~TcpMessageQueueMgr()
 
 TcpMessageQueue* TcpMessageQueueMgr::getWriteMessageQueue()
 {
-    if(!m_pWriteMessageQueue && m_nWriteProcesserCnt > 0)
+    if(NULL == m_pWriteMessageQueue && m_nWriteProcesserCnt > 0)
     {
         m_pWriteMessageQueue = new TcpMessageQueue(m_nWriteProcesserCnt);
     }
@@ -33,7 +33,7 @@ TcpMessageQueue* TcpMessageQueueMgr::getWriteMessageQueue()
 
 TcpMessageQueue* TcpMessageQueueMgr::getReadMessageQueue()
 {
-    if(!m_pReadMessageQueue && m_nReadProcesserCnt > 0)
+    if(NULL == m_pReadMessageQueue && m_nReadProcesserCnt > 0)
     {
         m_pReadMessageQueue = new TcpMessageQueue(m_nReadProcesserCnt);
     }

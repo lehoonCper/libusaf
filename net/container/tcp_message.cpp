@@ -19,7 +19,10 @@ TCPMessage::TCPMessage(const char * pData, int nSize, SessionInfo* pSession):Mes
 
 TCPMessage::~TCPMessage()
 {
-
+    if(NULL != m_pSession)
+    {
+        delete m_pSession;
+    }
 }
 
 SessionInfo* TCPMessage::getSessionInfo()

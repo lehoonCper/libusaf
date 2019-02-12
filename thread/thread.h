@@ -1,32 +1,28 @@
 #ifndef _INC_THREAD_H
 #define _INC_THREAD_H
-#include <pthread.h>
-
+#include <thread>
 #include "../inc/usaf_base.h"
 USAF_START
-
-typedef int thread_stat_t;
 
 class Thread
 {
 public:
     Thread();
+    virtual ~Thread();
 
-    virtual ~Thread(){}
-
-    pthread_t start();
-
+    bool start();
     bool stop();
-
     virtual bool process() = 0;
 
-    bool isRunning() const;
+    inline bool isRunning() const
+    {
+        return m_bRunning;
+    }
 
-    pthread_t getId() const;
 
 private:
-    pthread_t                m_nId;
-    bool                     m_bRunning;
+    std::thread*        m_pThread;
+    bool                m_bRunning;
 };
 
 USAF_END

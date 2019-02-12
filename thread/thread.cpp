@@ -1,56 +1,47 @@
 #include "thread.h"
 USAF_START
 
-void* thread_caller(void* p)
-{
-    if(p)
-    {
-        Thread* pThis = (Thread*) p;
-        pThis->process();
-    }
-    return p;
-}
-
 Thread::Thread()
 {
-    m_nId = -1;
+    m_pThread = NULL;
     m_bRunning = false;
 }
 
-pthread_t Thread::start()
+Thread::~Thread()
 {
-    if(isRunning())
+    if(NULL != m_pThread)
     {
-        return -1;
+        delete m_pThread;
+        m_pThread = NULL;
+    }
+}
+
+bool Thread::start()
+{
+    if(true == m_bRunning || NULL != m_pThread)
+    {
+        return false;
+    }
+
+    m_pThread = new std::thread(std::bind(&Thread::process, this));
+    if(NULL == m_pThread)
+    {
+        return false;
     }
 
     m_bRunning = true;
-    pthread_create(&m_nId, NULL, thread_caller, this);
-    if(m_nId <= 0)
-    {
-       return -1;
-    }
-    //what about pthread_join()?
-    pthread_detach(m_nId);  
-    return m_nId;
+    return true;
 }
 
 bool Thread::stop()
 {
+    if(false == m_bRunning)
+    {
+        return false;
+    }
     m_bRunning = false;
+    m_pThread->join();
     return true;
 }
-
-bool Thread::isRunning() const
-{
-    return m_bRunning;
-}
-
-pthread_t Thread::getId() const
-{
-    return m_nId;
-}
-
-
 
 USAF_END

@@ -12,54 +12,59 @@ public:
     Queue()
     {
         m_nSize = 0;
+        m_pMutex = new std::mutex();
     }
     ~Queue()
     {
-
+        if(NULL != m_pMutex)
+        {
+            delete m_pMutex;
+            m_pMutex = NULL;
+        }
     }
 
     void push(const T& t)
     {
-       m_mutex.lock();
+       m_pMutex->lock();
        m_queue.push_back(t);
        ++m_nSize;
-       m_mutex.unlock();
+       m_pMutex->unlock();
     }
 
     bool pop(T& t)
     {
-        m_mutex.lock();
-        if(0 == m_queue.size())
+        m_pMutex->lock();
+        if(m_queue.size() <= 0)
         {
-            m_mutex.unlock();
+            m_pMutex->unlock();
             return false;
         }
         t = m_queue.front();
         m_queue.pop_front();
         --m_nSize;
-        m_mutex.unlock();
+        m_pMutex->unlock();
         return true;
     }
 
     int size()
     {
-        m_mutex.lock();
+        m_pMutex->lock();
         int ret = m_nSize;
-        m_mutex.unlock();
+        m_pMutex->unlock();
         return ret;
     }
     
     void clear()
     {
-        m_mutex.lock();
+        m_pMutex->lock();
         m_queue.clear();
         m_nSize = 0;
-        m_mutex.unlock();
+        m_pMutex->unlock();
     }
 
 
 private:
-    std::mutex          m_mutex;
+    std::mutex*          m_pMutex;
     std::deque<T>       m_queue;
     int                 m_nSize;
 };

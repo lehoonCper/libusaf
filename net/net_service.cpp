@@ -26,22 +26,22 @@ NetService::NetService(const NetConfigServer& conf)
 NetService::~NetService()
 {
     stop();
-    if(m_accepter)
+    if(NULL != m_accepter)
     {
        delete m_accepter;
         m_accepter = NULL;
     }
-    if(m_pTcpReader)
+    if(NULL != m_pTcpReader)
     {
        delete m_pTcpReader;
         m_pTcpReader = NULL;
     }
-    if(m_pTcpWriter)
+    if(NULL != m_pTcpWriter)
     {
        delete m_pTcpWriter;
         m_pTcpWriter = NULL;
     }
-    if(m_pFdManager)
+    if(NULL != m_pFdManager)
     {
         delete m_pFdManager;
         m_pFdManager = NULL;
@@ -130,7 +130,7 @@ bool NetService::start()
         }
     }
 //start tcpreader thread
-    if(!m_pTcpReader)
+    if(NULL == m_pTcpReader)
     {
         m_pTcpReader = new TcpRecver(m_pFdManager);
         if(false == m_pTcpReader->start())
@@ -140,9 +140,9 @@ bool NetService::start()
         }
     }
 //start tcpwriter thread
-    if(!m_pTcpWriter)
+    if(NULL == m_pTcpWriter)
     {
-        m_pTcpWriter = new TcpWriter(m_pFdManager);
+        m_pTcpWriter = new TcpWriter();
         if(false == m_pTcpWriter->start())
         {
             std::cout << "[service] TcpWriter thread Start failed" << std::endl;
@@ -183,13 +183,15 @@ void NetService::transPort(TCPMessage* pMsg)
     }
 
     TcpMessageQueue* pWriteMessageQueue= m_pMessageQueueMgr->getWriteMessageQueue();
-    int nFd = pMsg->getSessionInfo()->getFd();
     if(pWriteMessageQueue)
     {
-        pWriteMessageQueue->put(nFd, pMsg);
-        m_pFdManager->registeEpollEvent(nFd, FDManager::EpollEventType::write_event);
+        pWriteMessageQueue->put(1, pMsg);
+        //m_pFdManager->registeEpollEvent(pMsg->getSessionInfo()->getFd(), FDManager::EpollEventType::write_event);
     }
 }
+
+
+
 
 
 USAF_END

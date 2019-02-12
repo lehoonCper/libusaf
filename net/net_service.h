@@ -30,6 +30,8 @@ public:
 
     void transPort(TCPMessage* pMsg);
 
+    int response(TCPMessage* pMsg);
+
 
 protected:
     virtual bool init();

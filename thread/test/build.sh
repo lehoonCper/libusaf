@@ -1,1 +1,1 @@
-g++ -g thread.cpp test.cpp -lpthread
+g++ -g ../thread.cpp test.cpp -std=c++11
